@@ -24,7 +24,6 @@ def spawn_random(width, height, screen, size, shift, n):
                     match = False
 
         coords.append([x, y])
-    spawn(width, height, screen, size, shift, coords)
     return coords
 
 

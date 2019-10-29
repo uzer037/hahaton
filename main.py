@@ -35,9 +35,6 @@ def start():
     player = Ship(screen, side, width, height, margin)
     turn = 0
     steps = 0
-    draw_field(width + 2, height + 2, screen, side, path)
-    player.draw()
-    pygame.display.flip()
 
 
 done = False
@@ -61,11 +58,7 @@ while not done:
                 if res == 2:
                     start()
                 elif res == 1:
-                    draw_field(width + 2, height + 2, screen, side, path)
-                    player.draw()
-                    spawn(width, height, screen, side, margin, icebergs)
-                    screen.blit(myfont.render(str(steps), False, (255, 255, 255)), (0, 0))
-                    pygame.display.flip()
+                    pass
                 else:
                     turn += 1
                     if dir == 0:
@@ -77,19 +70,19 @@ while not done:
                     else:
                         path.add((0, ((last_x + 1) * side, (last_y + 1) * side)))
 
-                    draw_field(width + 2, height + 2, screen, side, path)
-                    player.draw()
                     if turn == 2:
                         turn = 0
                         icebergs = spawn_random(
                             width, height, screen, side, margin, 5)
-                    else:
-                        spawn(width, height, screen, side, margin, icebergs)
 
                     if len(path) == width * (height + 1) + (width + 1) * height:
                         start()
                     moves.append([player.x, player.y])
-                    screen.blit(myfont.render(str(steps), False, (255, 255, 255)), (0, 0))
-                    pygame.display.flip()
 
+    draw_field(width + 2, height + 2, screen, side, path)
+    player.draw()
+    spawn(width, height, screen, side, margin, icebergs)
+    screen.blit(myfont.render(str(t), False, (255, 255, 255)), (0, 30))
+    screen.blit(myfont.render(str(steps), False, (255, 255, 255)), (0, 0))
+    pygame.display.flip()
     t = pygame.time.get_ticks()

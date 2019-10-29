@@ -10,6 +10,5 @@ def draw_field(width, height, screen, size, path):
     pic = pygame.image.load('check_line.png').convert_alpha()
     pic = pygame.transform.scale(pic, (size, size))
     path = list(path)
-    print(len(path))
     path = [(pygame.transform.rotate(pic, path[i][0]), (path[i][1][0] - 1, path[i][1][1] - 2)) for i in range(len(path))]
     screen.blits(path)
