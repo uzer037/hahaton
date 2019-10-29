@@ -23,19 +23,20 @@ class Enemy:
 def intelligence(enemy_list, player):
     alive = True
     for i in range(len(enemy_list)):
-        diffx = enemy_list[i].x - player.x
-        diffy = enemy_list[i].y - player.y
+        x1 = randrange(-1, 2)
+        y1 = randrange(-1, 2)
 
-        if abs(diffx) > abs(diffy):
-            if diffx < 0:
-                enemy_list[i].x += 1
-            else:
-                enemy_list[i].x -= 1
-        elif abs(diffx) < abs(diffy):
-            if diffy < 0:
-                enemy_list[i].y += 1
-            else:
-                enemy_list[i].y -= 1
+        enemy_list[i].x += x1
+        if enemy_list[i].x >= enemy_list[i].width:
+            enemy_list[i].x = enemy_list[i].width - 1
+        elif enemy_list[i].x < 0:
+            enemy_list[i].x = 0
+
+        enemy_list[i].y += y1
+        if enemy_list[i].y >= enemy_list[i].height:
+            enemy_list[i].y = enemy_list[i].height - 1
+        elif enemy_list[i].y < 0:
+            enemy_list[i].y = 0
 
         if enemy_list[i].x == player.x and enemy_list[i].y == player.y:
             alive = False
