@@ -25,9 +25,8 @@ def get_dir(key):
 
 
 def start():
-    global path, player, turn, icebergs, steps, moves, time
+    global path, player, turn, icebergs, steps, moves, time, steps_limit, time_limit
     path = set()
-    time = 0
     if len(moves) > 1:
         for i in range(len(moves) - 1):
             print(','.join(map(str, moves[i])), end='->')
@@ -37,6 +36,9 @@ def start():
     player = Ship(screen, side, width, height, margin)
     turn = 0
     steps = 0
+    time = 0
+    steps_limit = 50
+    time_limit = 10
     draw_field(width + 2, height + 2, screen, side, path)
     player.draw()
     pygame.display.flip()
@@ -80,9 +82,11 @@ while not done:
                     elif dir == 1:
                         path.add((0, (last_x * side, (last_y + 1) * side)))
                     elif dir == 2:
-                        path.add((90, ((last_x + 1) * side, (last_y + 1) * side)))
+                        path.add(
+                            (90, ((last_x + 1) * side, (last_y + 1) * side)))
                     else:
-                        path.add((0, ((last_x + 1) * side, (last_y + 1) * side)))
+                        path.add(
+                            (0, ((last_x + 1) * side, (last_y + 1) * side)))
 
                     if turn == 2:
                         turn = 0
@@ -92,7 +96,11 @@ while not done:
                     if len(path) == width * (height + 1) + (width + 1) * height:
                         start()
                     moves.append([player.x, player.y])
+                    if steps > steps_limit:
+                        start()
                 draw_all()
-        if event.type == USEREVENT:
+        elif event.type == USEREVENT:
             time += 1
+            if time > time_limit:
+                start()
             draw_all()
