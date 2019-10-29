@@ -56,10 +56,15 @@ while not done:
                     pygame.display.flip()
                 else:
                     turn += 1
-                    if dir == 0 or dir == 2:
-                        path.add((2 * last_x + 1, 2 * max(last_y, player.y)))
+                    if dir == 0:
+                        path.add((90, (last_x * side, last_y * side)))
+                    elif dir == 1:
+                        path.add((180, (last_x * side, last_y * side)))
+                    elif dir == 2:
+                        path.add((270, (last_x * side, last_y * side)))
                     else:
-                        path.add((2 * max(last_x, player.x), 2 * last_y + 1))
+                        path.add((0, (last_x * side, last_y * side)))
+
                     draw_field(width + 2, height + 2, screen, side, path)
                     player.draw()
                     if turn == 2:
