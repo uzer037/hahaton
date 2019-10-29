@@ -49,26 +49,19 @@ def draw_enemies(enemy_list):
         i.draw()
 
 
-def create_enemies(screen, size, width, height, shift):
-    n = 1
+def create_enemies(screen, size, width, height, shift, n):
     enemy_list = []
     for i in range(n):
-        x = randrange(2 * width + 1)
-        if x % 2 == 0:
-            y = randrange(height)
-        else:
-            y = randrange(height + 1)
+        x = randrange(1, width)
+        y = randrange(1, height)
 
         match = False
         while not match:
             match = True
             for j in enemy_list:
                 while x == j.x and y == j.y:
-                    x = randrange(2 * width + 1)
-                    if x % 2 == 0:
-                        y = randrange(height)
-                    else:
-                        y = randrange(height + 1)
+                    x = randrange(width)
+                    y = randrange(height)
                     match = False
 
         enemy_list.append(Enemy(screen, x, y, size, width, height, shift))
