@@ -1,5 +1,6 @@
 import pygame
 from Icebergs import spawn, draw_field
+from ship import Ship
 
 pygame.init()
 width, height = 10, 3
@@ -10,24 +11,28 @@ screen = pygame.display.set_mode((xres, yres))
 
 
 def get_dir(key):
-    if key == pygame.KEY_w:
+    if key == pygame.K_w:
         return 0
-    elif key == pygame.KEY_a:
+    elif key == pygame.K_a:
         return 1
-    elif key == pygame.KEY_s:
+    elif key == pygame.K_s:
         return 2
-    elif key == pygame.KEY_d:
+    elif key == pygame.K_d:
         return 3
 
 
-draw_field(width + 2, height + 2, screen, side)
-spawn(width, height, screen, side, margin)
+def start():
+    draw_field(width + 2, height + 2, screen, side)
+    global player, turn
+    player = Ship(screen, side, width, height, margin)
+    turn = 0
+    pygame.display.flip()
 
-# player = ship()
-turn = 0
-pygame.display.flip()
+
+start()
 
 done = False
+icebergs = [-1] * 4
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -36,15 +41,16 @@ while not done:
             elif (event.key == pygame.K_w or event.key == pygame.K_a or
                   event.key == pygame.K_s or event.key == pygame.K_d):
                 dir = get_dir(event.key)
-                # res = ship.move()
-                # if res == 2:
-                #    restart()
-                # elif res == 1:
-                #     pass
-                # else:
-                turn += 1
-                if turn == 2:
-                    turn = 0
-                    draw_field(width + 2, height + 2, screen, side)
-                    spawn(width, height, screen, side, margin)
-                pygame.display.flip()
+                res = player.move(dir, (icebergs[0], icebergs[2]), (icebergs[1], icebergs[3]))
+                if res == 2:
+                    start()
+                elif res == 1:
+                    pass
+                else:
+                    turn += 1
+                    if turn == 2:
+                        turn = 0
+                        draw_field(width + 2, height + 2, screen, side)
+                        player.draw()
+                        icebergs = spawn(width, height, screen, side, margin)
+                    pygame.display.flip()
