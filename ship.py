@@ -51,14 +51,29 @@ class Ship:
                 move_x == 0 and 2 * self.x == iceberg[0] and
                     min(self.y, dest_y) == iceberg[1]):
                 return 2
-        for i in range(4):
-            self.x = (dest_x - move_x) + i * move_x / 4
-            self.y = (dest_y - move_y) + i * move_y / 4
-
-            self.draw()
-            pygame.display.flip()
-            pygame.time.wait(50)
-
+        i = 0
+        while i < 20:
+            if i < 5:
+                self.x = (dest_x - move_x) + i * move_x / 20
+                self.y = (dest_y - move_y) + i * move_y / 20
+                self.draw()
+                pygame.display.flip()
+                pygame.time.wait(15)
+                i += 1
+            elif i < 15:
+                self.x = (dest_x - move_x) + i * move_x / 20
+                self.y = (dest_y - move_y) + i * move_y / 20
+                self.draw()
+                pygame.display.flip()
+                pygame.time.wait(10)
+                i += 3
+            else:
+                self.x = (dest_x - move_x) + i * move_x / 20
+                self.y = (dest_y - move_y) + i * move_y / 20
+                self.draw()
+                pygame.display.flip()
+                pygame.time.wait(15)
+                i += 1
         self.x = dest_x
         self.y = dest_y
         return 0

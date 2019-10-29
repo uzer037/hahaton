@@ -10,3 +10,5 @@ ship_left.png~
 *.kra~
 
 __pycache__/
+
+*.txt~
