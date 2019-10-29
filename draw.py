@@ -8,6 +8,6 @@ def draw_field(width, height, screen, size, path):
     pos = [(water, (size * (j % width), size * (j // width))) for j in range(width * height)]
     screen.blits(pos)
     pic = pygame.image.load('check_line.png').convert_alpha()
-    pic = pygame.transform.scale(pic, (size, size))
+    pic = pygame.transform.scale(pic, (2 * size, 2 * size))
     for i in path:
-        screen.blit(pic, (size // 2 * i[0], size // 2 * i[1]))
+        screen.blit(pic, (size // 2 * i[0] - size, size // 2 * i[1] - size // 2))
