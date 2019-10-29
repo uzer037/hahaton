@@ -10,27 +10,37 @@ def draw_field(width, height, screen, size):
 
 
 def spawn_random(width, height, screen, size, shift, n):
-    iceberg = pygame.image.load('iceberg.png').convert_alpha()
-    iceberg = pygame.transform.scale(iceberg, (size, size))
-    x1, x2 = randrange(width * 2 + 1), randrange(width * 2 + 1)
-    y1, y2 = randrange(height + 1), randrange(height + 1)
-    if x1 == x2 and y1 == y2:
-        if x1 > 0:
-            x1 -= 1
+    coords = []
+    for i in range(n):
+        x = randrange(2 * width + 1)
+        if x % 2 == 0:
+            y = randrange(height)
         else:
-            x1 += 1
-    if x1 % 2 == 0:
-        screen.blit(iceberg, (x1 // 2 * size + shift - size // 2, (y1 - 1) * size + shift))
-    else:
-        screen.blit(iceberg, (x1 // 2 * size + shift, y1 * size + shift - size // 2))
+            y = randrange(height + 1)
 
-    if x2 % 2 == 0:
-        screen.blit(iceberg, (x2 // 2 * size + shift - size // 2, (y2 - 1) * size + shift))
-    else:
-        screen.blit(iceberg, (x2 // 2 * size + shift, y2 * size + shift - size // 2))
+        match = False
+        while not match:
+            match = True
+            for j in coords:
+                while x == j[0] and y == j[0]:
+                    x = randrange(2 * width + 1)
+                    if x % 2 == 0:
+                        y = randrange(height)
+                    else:
+                        y = randrange(height + 1)
+                    match = False
 
-    return x1, y1, x2, y2
+        coords.append([x, y])
+
+    spawn(width, height, screen, size, shift, coords)
+    return coords
 
 
 def spawn(width, height, screen, size, shift, coords):
-
+    iceberg = pygame.image.load('iceberg.png').convert_alpha()
+    iceberg = pygame.transform.scale(iceberg, (size, size))
+    for i in coords:
+        if i[0] % 2 == 0:
+            screen.blit(iceberg, (i[0] // 2 * size + shift - size // 2, (i[1] - 1) * size + shift))
+        else:
+            screen.blit(iceberg, (i[0] // 2 * size + shift, i[1] * size + shift - size // 2))
