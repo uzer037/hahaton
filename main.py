@@ -45,8 +45,8 @@ def start():
 
 def draw_all():
     draw_field(width + 2, height + 2, screen, side, path)
-    spawn(width, height, screen, side, margin, icebergs)
     player.draw()
+    spawn(width, height, screen, side, margin, icebergs)
     screen.blit(myfont.render(str(steps), False, (255, 255, 255)), (0, 0))
     screen.blit(myfont.render(str(time), False, (255, 255, 255)), (0, 30))
     pygame.display.flip()
