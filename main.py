@@ -17,7 +17,7 @@ def draw_field():
             pygame.draw.rect(screen, (0, 0, 0), (i * side + margin, j * side + margin, side, side), 1)
 
 def draw_ship(x, y):
-    pygame.draw.rect(screen, (0, 255, 0), (x * side + margin, y * side + margin, 10, 10)
+    pygame.draw.rect(screen, (0, 255, 0), (x * side + margin, y * side + margin, 10, 10))
 
 spawn(width, height, screen, side, margin)
 draw_field()
