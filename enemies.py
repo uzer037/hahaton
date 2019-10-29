@@ -16,8 +16,8 @@ class Enemy:
         screen.blit(self.picture, (margin - side // 4, margin - side // 4))
 
     def draw(self):
-        self.screen.blit(self.picture, (self.margin + self.side * self.x - self.side // 4,
-                               self.margin + self.side * self.y - self.side // 4))
+        self.screen.blit(self.picture, (self.margin + int(self.side * self.x) - self.side // 4,
+                               self.margin + int(self.side * self.y) - self.side // 4))
 
 
 def intelligence(enemy_list, player):
