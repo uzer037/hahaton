@@ -1,4 +1,5 @@
 import pygame
+from pygame.locals import *
 from draw import draw_field
 from ship import Ship
 from icebergs import spawn, spawn_random
@@ -24,8 +25,9 @@ def get_dir(key):
 
 
 def start():
-    global path, player, turn, icebergs, steps, moves
+    global path, player, turn, icebergs, steps, moves, time
     path = set()
+    time = 0
     if len(moves) > 1:
         for i in range(len(moves) - 1):
             print(','.join(map(str, moves[i])), end='->')
@@ -35,13 +37,25 @@ def start():
     player = Ship(screen, side, width, height, margin)
     turn = 0
     steps = 0
+    draw_field(width + 2, height + 2, screen, side, path)
+    player.draw()
+    pygame.display.flip()
+    pygame.time.set_timer(USEREVENT, 1000)
+
+
+def draw_all():
+    draw_field(width + 2, height + 2, screen, side, path)
+    spawn(width, height, screen, side, margin, icebergs)
+    player.draw()
+    screen.blit(myfont.render(str(steps), False, (255, 255, 255)), (0, 0))
+    screen.blit(myfont.render(str(time), False, (255, 255, 255)), (0, 30))
+    pygame.display.flip()
 
 
 done = False
 icebergs = []
 moves = [[0, 0]]
 
-t = pygame.time.get_ticks()
 steps = 0
 start()
 while not done:
@@ -78,11 +92,7 @@ while not done:
                     if len(path) == width * (height + 1) + (width + 1) * height:
                         start()
                     moves.append([player.x, player.y])
-
-    draw_field(width + 2, height + 2, screen, side, path)
-    player.draw()
-    spawn(width, height, screen, side, margin, icebergs)
-    screen.blit(myfont.render(str(t), False, (255, 255, 255)), (0, 30))
-    screen.blit(myfont.render(str(steps), False, (255, 255, 255)), (0, 0))
-    pygame.display.flip()
-    t = pygame.time.get_ticks()
+                draw_all()
+        if event.type == USEREVENT:
+            time += 1
+            draw_all()
