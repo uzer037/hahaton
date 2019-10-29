@@ -31,16 +31,14 @@ def intelligence(enemy_list, player):
                 enemy_list[i].x += 1
             else:
                 enemy_list[i].x -= 1
-
-        elif diffx == diffy == 0:
-            alive = False
-
         else:
             if diffy < 0:
                 enemy_list[i].y += 1
             else:
                 enemy_list[i].y -= 1
 
+        if diffx == diffy == 0:
+            alive = False
 
     return enemy_list, alive
 
