@@ -2,9 +2,11 @@ from random import randrange
 import pygame
 
 
-def draw_field(screen, shift, size):
+def draw_field(width, height, screen, size):
     water = pygame.image.load('water.png').convert_alpha()
     water = pygame.transform.scale(water, (size, size))
+    pos = [(water, (size * (j % width), size * (j // width))) for j in range(width * height)]
+    screen.blits(pos)
 
 
 def spawn(n, m, screen, size, shift):
