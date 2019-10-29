@@ -1,10 +1,52 @@
-from ship import Ship
 from random import randrange
+import pygame
+
+
+class Enemy:
+    def __init__(self, screen, x, y, side, width, height, margin):
+        self.screen = screen
+        self.side = side
+        self.width = width
+        self.height = height
+        self.margin = margin
+        self.x = x
+        self.y = y
+        pic = pygame.image.load('iceberg.png').convert_alpha()
+        self.picture = pygame.transform.scale(pic, (side // 2, side // 2))
+        screen.blit(self.picture, (margin - side // 4, margin - side // 4))
+
+    def draw(self):
+        self.screen.blit(self.picture, (self.margin + self.side * self.x - self.side // 4,
+                               self.margin + self.side * self.y - self.side // 4))
 
 
 def intelligence(enemy_list, player):
-    for i in enemy_list:
+    alive = True
+    for i in range(len(enemy_list)):
+        diffx = enemy_list[i].x - player.x
+        diffy = enemy_list[i].y - player.y
 
+        if abs(diffx) > abs(diffy):
+            if diffx < 0:
+                enemy_list[i].x -= 1
+            else:
+                enemy_list[i].x += 1
+
+        elif abs(diffx) < abs(diffy):
+            if diffy < 0:
+                enemy_list[i].y -= 1
+            else:
+                enemy_list[i].y += 1
+        else:
+            alive = False
+            break
+
+    return enemy_list, alive
+
+
+def draw_enemies(enemy_list):
+    for i in enemy_list:
+        i.draw()
 
 
 def create_enemies(screen, size, width, height, shift):
@@ -29,5 +71,5 @@ def create_enemies(screen, size, width, height, shift):
                         y = randrange(height + 1)
                     match = False
 
-        enemy_list.append(Ship(screen, x, y, size, width, height, shift))
+        enemy_list.append(Enemy(screen, x, y, size, width, height, shift))
     return enemy_list
