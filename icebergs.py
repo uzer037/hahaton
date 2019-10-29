@@ -34,6 +34,6 @@ def spawn(width, height, screen, size, shift, coords):
     iceberg = pygame.transform.scale(iceberg, (size, size))
     for i in coords:
         if i[0] % 2 == 0:
-            screen.blit(iceberg, (i[0] // 2 * size + shift - size // 2, (i[1] - 1) * size + shift))
+            screen.blit(iceberg, (i[0] // 2 * size + shift - size // 2, i[1] * size + shift))
         else:
             screen.blit(iceberg, (i[0] // 2 * size + shift, i[1] * size + shift - size // 2))

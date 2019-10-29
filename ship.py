@@ -46,10 +46,10 @@ class Ship:
         if dest_x < 0 or dest_x > self.width or dest_y < 0 or dest_y > self.height:
             return 1
         for iceberg in icebergs:
-            if (move_y == 0 and 2 * self.y == iceberg[0] and
-                2 * min(self.x, dest_x) == iceberg[1] - 1 or
+            if (move_y == 0 and self.y == iceberg[1] and
+                2 * min(self.x, dest_x) == iceberg[0] - 1 or
                 move_x == 0 and 2 * self.x == iceberg[0] and
-                    2 * min(self.y, dest_y) == iceberg[1] - 1):
+                    min(self.y, dest_y) == iceberg[1]):
                 return 2
         self.x = dest_x
         self.y = dest_y
