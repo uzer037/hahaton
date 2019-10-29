@@ -28,15 +28,15 @@ def intelligence(enemy_list, player):
 
         if abs(diffx) > abs(diffy):
             if diffx < 0:
-                enemy_list[i].x -= 1
-            else:
                 enemy_list[i].x += 1
+            else:
+                enemy_list[i].x -= 1
 
         elif abs(diffx) < abs(diffy):
             if diffy < 0:
-                enemy_list[i].y -= 1
-            else:
                 enemy_list[i].y += 1
+            else:
+                enemy_list[i].y -= 1
         else:
             alive = False
             break
