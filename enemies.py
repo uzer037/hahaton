@@ -31,13 +31,13 @@ def intelligence(enemy_list, player):
                 enemy_list[i].x += 1
             else:
                 enemy_list[i].x -= 1
-        else:
+        elif abs(diffx) < abs(diffy):
             if diffy < 0:
                 enemy_list[i].y += 1
             else:
                 enemy_list[i].y -= 1
 
-        if diffx == diffy == 0:
+        if enemy_list[i].x == player.x and enemy_list[i].y == player.y:
             alive = False
 
     return enemy_list, alive
