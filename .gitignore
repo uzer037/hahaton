@@ -8,3 +8,5 @@ ship_left.png~
 *.png~
 
 *.kra~
+
+__pycache__/
