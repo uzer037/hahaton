@@ -24,8 +24,13 @@ def get_dir(key):
 
 
 def start():
-    global path, player, turn, icebergs, steps
+    global path, player, turn, icebergs, steps, moves
     path = set()
+    if len(moves) > 1:
+        for i in range(len(moves) - 1):
+            print(','.join(map(str, moves[i])), end='->')
+        print(','.join(map(str, moves[-1])))
+    moves = [[0, 0]]
     icebergs = []
     player = Ship(screen, side, width, height, margin)
     turn = 0
@@ -37,6 +42,7 @@ def start():
 
 done = False
 icebergs = []
+moves = [[0, 0]]
 
 t = pygame.time.get_ticks()
 steps = 0
@@ -63,13 +69,13 @@ while not done:
                 else:
                     turn += 1
                     if dir == 0:
-                        path.add((90, (last_x * side, last_y * side)))
+                        path.add((90, ((last_x + 1) * side, last_y * side)))
                     elif dir == 1:
-                        path.add((180, (last_x * side, last_y * side)))
+                        path.add((0, (last_x * side, (last_y + 1) * side)))
                     elif dir == 2:
-                        path.add((90, (last_x * side, (last_y + 1) * side)))
+                        path.add((90, ((last_x + 1) * side, (last_y + 1) * side)))
                     else:
-                        path.add((180, ((last_x + 1) * side, last_y * side)))
+                        path.add((0, ((last_x + 1) * side, (last_y + 1) * side)))
 
                     draw_field(width + 2, height + 2, screen, side, path)
                     player.draw()
@@ -82,6 +88,7 @@ while not done:
 
                     if len(path) == width * (height + 1) + (width + 1) * height:
                         start()
+                    moves.append([player.x, player.y])
                     screen.blit(myfont.render(str(steps), False, (255, 255, 255)), (0, 0))
                     pygame.display.flip()
 
