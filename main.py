@@ -1,7 +1,5 @@
-import numpy as np
 import pygame
-import time
-from Icebergs import spawn
+from Icebergs import spawn, draw_field
 
 pygame.init()
 width, height = 10, 3
@@ -22,17 +20,10 @@ def get_dir(key):
         return 3
 
 
-def draw_field():
-    pygame.draw.rect(screen, (255, 255, 255), (0, 0, xres, yres))
-    for i in range(width):
-        for j in range(height):
-            pygame.draw.rect(screen, (0, 0, 0), (i * side +
-                                                 margin, j * side + margin, side, side), 1)
-
-
+draw_field(width + 2, height + 2, screen, side)
 spawn(width, height, screen, side, margin)
-draw_field()
-#player = ship()
+
+# player = ship()
 turn = 0
 pygame.display.flip()
 
@@ -54,6 +45,6 @@ while not done:
                 turn += 1
                 if turn == 2:
                     turn = 0
-                    draw_field()
+                    draw_field(width + 2, height + 2, screen, side)
                     spawn(width, height, screen, side, margin)
                 pygame.display.flip()
