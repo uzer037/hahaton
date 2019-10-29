@@ -9,6 +9,7 @@ side, thickness = 100, 1
 margin = side
 xres, yres = width * side + 2 * margin, height * side + 2 * margin
 screen = pygame.display.set_mode((xres, yres))
+myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 
 def get_dir(key):
@@ -23,11 +24,12 @@ def get_dir(key):
 
 
 def start():
-    global path, player, turn, icebergs
+    global path, player, turn, icebergs, steps
     path = set()
     icebergs = []
     player = Ship(screen, side, width, height, margin)
     turn = 0
+    steps = 0
     draw_field(width + 2, height + 2, screen, side, path)
     player.draw()
     pygame.display.flip()
@@ -36,6 +38,8 @@ def start():
 done = False
 icebergs = []
 
+t = pygame.time.get_ticks()
+steps = 0
 start()
 while not done:
     for event in pygame.event.get():
@@ -45,6 +49,7 @@ while not done:
             elif (event.key == pygame.K_w or event.key == pygame.K_a or
                   event.key == pygame.K_s or event.key == pygame.K_d):
                 dir = get_dir(event.key)
+                steps += 1
                 last_x, last_y = player.x, player.y
                 res = player.move(dir, icebergs)
                 if res == 2:
@@ -53,6 +58,7 @@ while not done:
                     draw_field(width + 2, height + 2, screen, side, path)
                     player.draw()
                     spawn(width, height, screen, side, margin, icebergs)
+                    screen.blit(myfont.render(str(steps), False, (255, 255, 255)), (0, 0))
                     pygame.display.flip()
                 else:
                     turn += 1
@@ -76,4 +82,7 @@ while not done:
 
                     if len(path) == width * (height + 1) + (width + 1) * height:
                         start()
+                    screen.blit(myfont.render(str(steps), False, (255, 255, 255)), (0, 0))
                     pygame.display.flip()
+
+    t = pygame.time.get_ticks()
