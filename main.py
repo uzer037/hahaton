@@ -1,5 +1,5 @@
 import pygame
-from Icebergs import spawn, draw_field
+from Icebergs import spawn_random, draw_field
 from ship import Ship
 
 pygame.init()
@@ -52,5 +52,5 @@ while not done:
                         turn = 0
                         draw_field(width + 2, height + 2, screen, side)
                         player.draw()
-                        icebergs = spawn(width, height, screen, side, margin)
+                        icebergs = spawn_random(width, height, screen, side, margin)
                     pygame.display.flip()
