@@ -23,12 +23,13 @@ def get_dir(key):
 
 
 def start():
-    global path
+    global path, player, turn, icebergs
     path = set()
-    draw_field(width + 2, height + 2, screen, side, path)
-    global player, turn
+    icebergs = []
     player = Ship(screen, side, width, height, margin)
     turn = 0
+    draw_field(width + 2, height + 2, screen, side, path)
+    player.draw()
     pygame.display.flip()
 
 
@@ -64,7 +65,7 @@ while not done:
                     if turn == 2:
                         turn = 0
                         icebergs = spawn_random(
-                            width, height, screen, side, margin, 2)
+                            width, height, screen, side, margin, 5)
                     else:
                         spawn(width, height, screen, side, margin, icebergs)
                     pygame.display.flip()
