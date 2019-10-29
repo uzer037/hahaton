@@ -61,9 +61,9 @@ while not done:
                     elif dir == 1:
                         path.add((180, (last_x * side, last_y * side)))
                     elif dir == 2:
-                        path.add((270, (last_x * side, last_y * side)))
+                        path.add((90, (last_x * side, (last_y + 1) * side)))
                     else:
-                        path.add((0, (last_x * side, last_y * side)))
+                        path.add((180, ((last_x + 1) * side, last_y * side)))
 
                     draw_field(width + 2, height + 2, screen, side, path)
                     player.draw()
@@ -73,4 +73,7 @@ while not done:
                             width, height, screen, side, margin, 5)
                     else:
                         spawn(width, height, screen, side, margin, icebergs)
+
+                    if len(path) == width * (height + 1) + (width + 1) * height:
+                        start()
                     pygame.display.flip()
