@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from Snake import snake
 from draw import draw_field
 from ship import Ship
 from icebergs import spawn, spawn_random
@@ -25,7 +26,9 @@ def get_dir(key):
 
 
 def start():
-    global path, player, turn, icebergs, steps, moves, time, steps_limit, time_limit
+    xres, yres = width * side + 2 * margin, height * side + 2 * margin
+    screen = pygame.display.set_mode((xres, yres))
+    global path, player, turn, icebergs, steps, moves, time, steps_limit, time_limit, icebergs_number
     path = set()
     moves = [[0, 0]]
     icebergs = []
@@ -33,8 +36,9 @@ def start():
     turn = 0
     steps = 0
     time = 0
-    steps_limit = 50
-    time_limit = 10
+    icebergs_number = 5
+    steps_limit = 70
+    time_limit = 5
     draw_field(width + 2, height + 2, screen, side, path)
     player.draw()
     pygame.display.flip()
@@ -42,6 +46,8 @@ def start():
 
 
 def death():
+    if time == 6 and steps == 66:
+        snake()
     with open('output.txt', 'w') as file:
         for i in range(len(moves) - 1):
             file.write(','.join(map(str, moves[i])) + '->')
@@ -96,7 +102,7 @@ while not done:
                     if turn == 2:
                         turn = 0
                         icebergs = spawn_random(
-                            width, height, screen, side, margin, 5)
+                            width, height, screen, side, margin, icebergs_number)
 
                     if len(path) == width * (height + 1) + (width + 1) * height:
                         start()
