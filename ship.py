@@ -18,11 +18,12 @@ class Ship:
 
     def draw(self):
         pic = pygame.image.load(self.picture).convert_alpha()
-        pic = pygame.transform.scale(pic, (3 * self.side // 4, 3 * self.side // 4))
+        pic = pygame.transform.scale(
+            pic, (3 * self.side // 4, 3 * self.side // 4))
         self.screen.blit(pic, (self.margin + self.side * self.x - 3 * self.side // 8,
                                self.margin + self.side * self.y - 3 * self.side // 8))
 
-    def move(self, dir, icebergs_x, icebergs_y):
+    def move(self, dir, icebergs):
         self.dir = dir
         if dir == 0:
             move_x = 0
@@ -44,17 +45,12 @@ class Ship:
         dest_y = self.y + move_y
         if dest_x < 0 or dest_x > self.width or dest_y < 0 or dest_y > self.height:
             return 1
-        elif (move_y == 0 and 2 * self.y == icebergs_y[0] and
-              2 * min(self.x, dest_x) == icebergs_x[0] - 1 or
-              move_x == 0 and 2 * self.x == icebergs_x[0] and
-              2 * min(self.y, dest_y) == icebergs_y[0] - 1
-              or
-              move_y == 0 and 2 * self.y == icebergs_y[0] and
-              2 * min(self.x, dest_x) == icebergs_x[0] - 1 or
-              move_x == 0 and 2 * self.x == icebergs_x[0] and
-              2 * min(self.y, dest_y) == icebergs_y[0] - 1):
-            return 2
-        else:
-            self.x = dest_x
-            self.y = dest_y
-            return 0
+        for iceberg in icebergs:
+            if (move_y == 0 and 2 * self.y == iceberg[0] and
+                2 * min(self.x, dest_x) == iceberg[1] - 1 or
+                move_x == 0 and 2 * self.x == iceberg[0] and
+                    2 * min(self.y, dest_y) == iceberg[1] - 1):
+                return 2
+        self.x = dest_x
+        self.y = dest_y
+        return 0

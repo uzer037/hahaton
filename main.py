@@ -1,9 +1,10 @@
 import pygame
 from draw import draw_field
 from ship import Ship
+from icebergs import spawn, spawn_random
 
 pygame.init()
-width, height = 10, 3
+width, height = 5, 2
 side, thickness = 100, 1
 margin = side
 xres, yres = width * side + 2 * margin, height * side + 2 * margin
@@ -21,18 +22,18 @@ def get_dir(key):
         return 3
 
 
-done = False
-icebergs = [-1] * 4
-path = set()
-
-
 def start():
+    global path
+    path = set()
     draw_field(width + 2, height + 2, screen, side, path)
     global player, turn
     player = Ship(screen, side, width, height, margin)
     turn = 0
     pygame.display.flip()
 
+
+done = False
+icebergs = []
 
 start()
 while not done:
@@ -44,13 +45,13 @@ while not done:
                   event.key == pygame.K_s or event.key == pygame.K_d):
                 dir = get_dir(event.key)
                 last_x, last_y = player.x, player.y
-                res = player.move(
-                    dir, (icebergs[0], icebergs[2]), (icebergs[1], icebergs[3]))
+                res = player.move(dir, icebergs)
                 if res == 2:
                     start()
                 elif res == 1:
                     draw_field(width + 2, height + 2, screen, side, path)
                     player.draw()
+                    spawn(width, height, screen, side, margin, icebergs)
                     pygame.display.flip()
                 else:
                     turn += 1
@@ -62,5 +63,8 @@ while not done:
                     player.draw()
                     if turn == 2:
                         turn = 0
-                        #icebergs = spawn_random(width, height, screen, side, margin, 2)
+                        icebergs = spawn_random(
+                            width, height, screen, side, margin, 2)
+                    else:
+                        spawn(width, height, screen, side, margin, icebergs)
                     pygame.display.flip()
