@@ -2,7 +2,7 @@ import pygame
 
 
 class Ship:
-    def __init__(self, screen, side, width, height, margin):
+    def __init__(self, screen, x, y, side, width, height, margin):
         self.screen = screen
         self.side = side
         self.width = width
@@ -10,8 +10,8 @@ class Ship:
         self.margin = margin
         self.dir = 3
         self.picture = 'ship_right.png'
-        self.x = 0
-        self.y = 0
+        self.x = x
+        self.y = y
         pic = pygame.image.load(self.picture).convert_alpha()
         pic = pygame.transform.scale(pic, (3 * side // 4, 3 * side // 4))
         screen.blit(pic, (margin - 3 * side // 8, margin - 3 * side // 8))

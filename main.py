@@ -40,6 +40,7 @@ def start():
     pygame.display.flip()
     pygame.time.set_timer(USEREVENT, 1000)
 
+
 def death():
     with open('output.txt', 'w') as file:
         for i in range(len(moves) - 1):
