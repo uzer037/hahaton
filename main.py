@@ -27,13 +27,9 @@ def get_dir(key):
 def start():
     global path, player, turn, icebergs, steps, moves, time, steps_limit, time_limit
     path = set()
-    if len(moves) > 1:
-        for i in range(len(moves) - 1):
-            print(','.join(map(str, moves[i])), end='->')
-        print(','.join(map(str, moves[-1])))
     moves = [[0, 0]]
     icebergs = []
-    player = Ship(screen, side, width, height, margin)
+    player = Ship(screen, 0, 0, side, width, height, margin)
     turn = 0
     steps = 0
     time = 0
@@ -43,6 +39,14 @@ def start():
     player.draw()
     pygame.display.flip()
     pygame.time.set_timer(USEREVENT, 1000)
+
+def death():
+    with open('output.txt', 'w') as file:
+        for i in range(len(moves) - 1):
+            file.write(','.join(map(str, moves[i])) + '->')
+        file.write(','.join(map(str, moves[-1])))
+        file.write('\n' + str(steps))
+    start()
 
 
 def draw_all():
@@ -72,7 +76,7 @@ while not done:
                 last_x, last_y = player.x, player.y
                 res = player.move(dir, icebergs)
                 if res == 2:
-                    start()
+                    death()
                 elif res == 1:
                     pass
                 else:
@@ -97,10 +101,10 @@ while not done:
                         start()
                     moves.append([player.x, player.y])
                     if steps > steps_limit:
-                        start()
+                        death()
                 draw_all()
         elif event.type == USEREVENT:
             time += 1
             if time > time_limit:
-                start()
+                death()
             draw_all()
