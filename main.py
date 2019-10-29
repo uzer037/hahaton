@@ -52,5 +52,5 @@ while not done:
                         turn = 0
                         draw_field(width + 2, height + 2, screen, side)
                         player.draw()
-                        icebergs = spawn_random(width, height, screen, side, margin)
+                        icebergs = spawn_random(width, height, screen, side, margin, 2)
                     pygame.display.flip()
