@@ -14,3 +14,4 @@ def spawn(n, m, screen, size):
             x1 += 1
     screen.blit(iceberg, (x1 * size, y1 * size + size // 3))
     screen.blit(iceberg, (x2 * size, y2 * size + size // 3))
+    return x1, y1, x2, y2
