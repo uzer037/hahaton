@@ -11,7 +11,7 @@ pygame.init()
 width, height = 5, 2
 side, thickness = 100, 1
 margin = side
-xres, yres = 500, 500
+xres, yres = 700, 700
 screen = pygame.display.set_mode((xres, yres))
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
@@ -61,9 +61,8 @@ def death():
             file.write(','.join(map(str, moves[i])) + '->')
         file.write(','.join(map(str, moves[-1])))
         file.write('\n' + str(steps))
-    xres, yres = 500, 500
     screen = pygame.display.set_mode((xres, yres))
-    mode = create_menu(screen, 500, 500, current_settings)
+    mode = create_menu(screen, xres, yres, current_settings)
     if mode == -1:
         done = True
     else:
@@ -112,7 +111,7 @@ def move_player(dest_x, dest_y, move_x, move_y):
     player.y = dest_y
 
 
-mode = create_menu(screen, 500, 500)
+mode = create_menu(screen, xres, yres)
 done = True
 if mode != -1:
     global icebergs, moves, steps
