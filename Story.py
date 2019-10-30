@@ -50,4 +50,4 @@ def lose(screen, xres, yres):
     render_text(screen, arr, myfont, xres, yres)
 
 
-intro(pygame.display.set_mode((500, 500)), 500, 500)
+# intro(pygame.display.set_mode((500, 500)), 500, 500)

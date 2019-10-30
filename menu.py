@@ -17,10 +17,13 @@ def scores(screen, xres, yres):
     except:
         return 0
 
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                return 0
+    done = False
+    while not done:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    done = True
+                    return 0
 
 
 def create(screen, xsz, ysz, cur_set = (4, 2, -1, -1, 2, 0)):
