@@ -53,6 +53,7 @@ def start(settings):
 
 
 def death():
+    pygame.time.wait(200)
     global done, icebergs, moves, steps
     if time == 6 and steps == 66:
         snake()
@@ -146,6 +147,7 @@ while not done:
                     moves.append([player.x, player.y])
                     enemies, alive = intelligence(enemies, player)
                     if not alive:
+                        draw_all()
                         death()
                     if len(path) == width * (height + 1) + (width + 1) * height:
                         start(current_settings)
