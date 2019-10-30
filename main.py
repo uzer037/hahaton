@@ -127,6 +127,27 @@ def move_player(dest_x, dest_y, move_x, move_y):
     player.y=dest_y
 
 
+def write_name(name, score):
+    arr = []
+    try:
+        inp = open('scores.txt', 'r')
+        s = inp.readline().rstrip().split()
+        while s:
+            s[0] = int(s[0])
+            arr.append(s)
+            s = inp.readline().rstrip().split()
+        inp.close()
+    except:
+        pass
+    arr.append([score, name])
+    arr.sort()
+    out = open('scores.txt', 'w')
+    for i in range(min(5, len(arr))):
+        print(arr[i][0], arr[i][1], file=out)
+    out.close()
+
+
+
 mode=create_menu(screen, xres, yres)
 done=True
 if mode != -1:

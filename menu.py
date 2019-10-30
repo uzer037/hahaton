@@ -2,6 +2,27 @@ import pygame
 maxbtn = 4
 
 
+def scores(screen, xres, yres):
+    try:
+        inp = open('scores.txt', 'r')
+        font = pygame.font.Font('PoiretOne-Regular.ttf', 25)
+        arr = []
+        s = inp.readline().rstrip()
+        while s and len(arr) < 5:
+            arr.append(s)
+            s = inp.readline().rstrip()
+        for i in range(len(arr)):
+            screen.blit(font.render(arr[i], False, (255, 255, 255)), (25, 25 * (i + 1)))
+        pygame.display.flip()
+    except:
+        return 0
+
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                return 0
+
+
 def create(screen, xsz, ysz, cur_set = (4, 2, -1, -1, 2, 0)):
     maxbtn = 4
     status = 0  # 0=ok,-1=exit
@@ -79,6 +100,7 @@ def create(screen, xsz, ysz, cur_set = (4, 2, -1, -1, 2, 0)):
                         return (width, height, step_lim, time_lim, iceb, enem)
                     if(btn == 1):  # scores
                         print("scores")
+                        scores(screen, xsz, ysz)
                     if(btn == 2):  # settings game
                         print("settings")
                         width, height, step_lim, time_lim, iceb, enem = settings(
