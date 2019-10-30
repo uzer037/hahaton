@@ -21,10 +21,11 @@ class Enemy:
 
 
 def intelligence(enemy_list, player):
+    alive = True
 
     for i in range(len(enemy_list)):
         if enemy_list[i].x == player.x and enemy_list[i].y == player.y:
-            return enemy_list, False
+            alive = False
 
         x1 = randrange(-1, 2)
         y1 = randrange(-1, 2)
@@ -42,9 +43,9 @@ def intelligence(enemy_list, player):
             enemy_list[i].y = 0
 
         if enemy_list[i].x == player.x and enemy_list[i].y == player.y:
-            return enemy_list, False
+            alive = False
 
-    return enemy_list, True
+    return enemy_list, alive
 
 
 def draw_enemies(enemy_list):
