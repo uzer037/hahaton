@@ -39,16 +39,16 @@ def snake():
             pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(i[0] * 10, i[1] * 10, 10, 10), 1)
 
         pressed = pygame.key.get_pressed()
-        if pressed[pygame.K_a] and speedx != 1:
+        if (pressed[pygame.K_a] or pressed[pygame.K_LEFT]) and speedx != 1:
             speedx = -1
             speedy = 0
-        elif pressed[pygame.K_d] and speedx != -1:
+        elif (pressed[pygame.K_d] or pressed[pygame.K_RIGHT]) and speedx != -1:
             speedx = 1
             speedy = 0
-        elif pressed[pygame.K_w] and speedy != 1:
+        elif (pressed[pygame.K_w] or pressed[pygame.K_UP]) and speedy != 1:
             speedx = 0
             speedy = -1
-        elif pressed[pygame.K_s] and speedy != -1:
+        elif (pressed[pygame.K_s] or pressed[pygame.K_DOWN]) and speedy != -1:
             speedx = 0
             speedy = 1
 
