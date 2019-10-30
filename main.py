@@ -13,7 +13,7 @@ pygame.init()
 width, height = 5, 2
 side, thickness = 100, 1
 margin = side
-xres, yres = 500, 500
+xres, yres = 700, 700
 screen = pygame.display.set_mode((xres, yres))
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 timerfont = pygame.font.Font('cyrillic_pixel-7.ttf', 30)
@@ -63,7 +63,7 @@ def death():
         snake()
     screen = pygame.display.set_mode((xres, yres))
     bg = pygame.image.load('menu_bg.png')
-    bg = pygame.transform.scale(bg, (500, 500))
+    bg = pygame.transform.scale(bg, (xres, yres))
     screen.blit(bg, (0, 0))
     moves_string = ''
     for i in range(len(moves)):
@@ -75,16 +75,24 @@ def death():
         current = moves_string[i * 50:min((i + 1) * 50, len(moves_string))]
         if i > 10:
             current += '...'
-        screen.blit(myfont.render(current, False, (0, 255, 0)), (0, i * 25))
+        screen.blit(myfont.render(current, False, (255, 255, 255)), (0, i * 25))
         end = i * 25
         if i > 10:
             break
     myfont = pygame.font.SysFont('Comic Sans MS', 30)
     end += 50
     screen.blit(myfont.render('Всего шагов: ' + str(steps), False,
-                              (0, 255, 0)), (xres / 2 - 150, end))
+                              (255, 255, 255)), (xres / 2 - 150, end))
+    end += 50
+    screen.blit(myfont.render('Нажмите любую клавишу чтобы продолжить', False,
+                              (255, 255, 255)), (20, end))
+    done = False
+    while not done:
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                done = True
     pygame.display.flip()
-    pygame.time.wait(5000)
     mode = create_menu(screen, xres, yres, current_settings)
     if mode == -1:
         done = True
