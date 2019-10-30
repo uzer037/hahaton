@@ -2,17 +2,21 @@ import pygame
 
 
 def render_text(screen, arr, myfont, xres, yres):
+    pygame.init()
+    screen.fill(0x0)
+    pygame.mixer.music.load('317448__cornersting__poke1.mp3')
+
     for i in range(len(arr)):
         for j in range(len(arr[i])):
             pygame.event.get()
+            pygame.mixer.music.play()
             screen.blit(myfont.render(arr[i][:j + 1], False, (255, 255, 255)), (xres // 24, yres // 24 * (i + 1)))
             pygame.display.flip()
-            pygame.time.wait(100)
-        pygame.time.wait(100)
+            pygame.time.wait(50)
+        pygame.time.wait(200)
 
 
-def play(screen, xres, yres):
-    pygame.init()
+def intro(screen, xres, yres):
     myfont = pygame.font.SysFont('Comic Sans MS', xres // 24)
     arr = ["One day, after decades",
            "of gathering and improving it's knowledge,",
@@ -46,4 +50,4 @@ def lose(screen, xres, yres):
     render_text(screen, arr, myfont, xres, yres)
 
 
-play(pygame.display.set_mode((500, 500)), 500, 500)
+# intro(pygame.display.set_mode((500, 500)), 500, 500)
