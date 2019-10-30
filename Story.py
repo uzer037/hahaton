@@ -10,7 +10,7 @@ def render_text(screen, arr, myfont, xres, yres):
         for j in range(len(arr[i])):
             for event in pygame.event.get():
                 if event.type == event.type == pygame.KEYDOWN:
-                    break
+                    return 0
             pygame.mixer.music.play()
             screen.blit(myfont.render(arr[i][:j + 1], False, (255, 255, 255)), (xres // 24, yres // 24 * (i + 1)))
             pygame.display.flip()
