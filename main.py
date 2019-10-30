@@ -67,7 +67,7 @@ def death(win):
         victory(screen, xres, yres)
     else:
         lose(screen, xres, yres)
-    write_name(get_name(), steps)
+    write_name(get_name(), len(path))
     if time == 6 and steps == 66:
         snake()
     bg = pygame.image.load('menu_bg.png')
