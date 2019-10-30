@@ -17,12 +17,16 @@ class Enemy:
 
     def draw(self):
         self.screen.blit(self.picture, (self.margin + int(self.side * self.x) - self.side // 4,
-                               self.margin + int(self.side * self.y) - self.side // 4))
+                                        self.margin + int(self.side * self.y) - self.side // 4))
 
 
 def intelligence(enemy_list, player):
     alive = True
+
     for i in range(len(enemy_list)):
+        if enemy_list[i].x == player.x and enemy_list[i].y == player.y:
+            alive = False
+
         x1 = randrange(-1, 2)
         y1 = randrange(-1, 2)
 

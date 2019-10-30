@@ -50,5 +50,5 @@ class Ship:
                 2 * min(self.x, dest_x) == iceberg[0] - 1 or
                 move_x == 0 and 2 * self.x == iceberg[0] and
                     min(self.y, dest_y) == iceberg[1]):
-                return 2
+                return (dest_x - 2 * move_x / 3, dest_y - 2 * move_y / 3, move_x / 3, move_y / 3, 2)
         return (dest_x, dest_y, move_x, move_y, 0)

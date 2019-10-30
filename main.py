@@ -42,7 +42,7 @@ def start(settings):
     steps = 0
     time = 0
     icebergs_number = settings[4]
-    enemies_number = 0
+    enemies_number = settings[5]
     icebergs = []
     enemies = create_enemies(
         screen, side, width, height, margin, enemies_number)
@@ -85,27 +85,20 @@ def draw_all():
 
 def move_player(dest_x, dest_y, move_x, move_y):
     i = 0
-    while i < 100:
-        if i < 5:
-            player.x = (dest_x - move_x) + i * move_x / 100
-            player.y = (dest_y - move_y) + i * move_y / 100
-            draw_all()
-            pygame.display.flip()
-            pygame.time.wait(5 - i)
-            i += 1
-        elif i < 80:
-            player.x = (dest_x - move_x) + i * move_x / 100
-            player.y = (dest_y - move_y) + i * move_y / 100
+    while i < 50:
+        if i < 45:
+            player.x = (dest_x - move_x) + i * move_x / 50
+            player.y = (dest_y - move_y) + i * move_y / 50
             draw_all()
             pygame.display.flip()
             pygame.time.wait(1)
             i += 1
         else:
-            player.x = (dest_x - move_x) + i * move_x / 100
-            player.y = (dest_y - move_y) + i * move_y / 100
+            player.x = (dest_x - move_x) + i * move_x / 50
+            player.y = (dest_y - move_y) + i * move_y / 50
             draw_all()
             pygame.display.flip()
-            pygame.time.wait(i - 80)
+            pygame.time.wait(i - 45)
             i += 1
     player.x = dest_x
     player.y = dest_y
@@ -114,9 +107,8 @@ def move_player(dest_x, dest_y, move_x, move_y):
 mode = create_menu(screen, xres, yres)
 done = True
 if mode != -1:
-    global icebergs, moves, steps
+    global moves, steps
     done = False
-    icebergs = []
     moves = [[0, 0]]
     steps = 0
     start(mode)
@@ -132,17 +124,20 @@ while not done:
                 steps += 1
                 last_x, last_y = player.x, player.y
                 res = player.move(dir, icebergs)
-                if res == 2:
-                    death()
-                elif res == 1:
+                if res == 1:
                     pass
-                else:
-                    turn += 1
-                    enemies, alive = intelligence(enemies, player)
-                    if not alive:
-                        death()
+                elif res[-1] == 2:
                     move_player(res[0], res[1], res[2], res[3])
                     moves.append([player.x, player.y])
+                    death()
+                else:
+                    turn += 1
+                    move_player(res[0], res[1], res[2], res[3])
+                    moves.append([player.x, player.y])
+                    enemies, alive = intelligence(enemies, player)
+                    if not alive:
+                        draw_all()
+                        death()
                     if dir == 0:
                         path.add((90, ((last_x + 1) * side, last_y * side)))
                     elif dir == 1:
@@ -154,7 +149,7 @@ while not done:
                         path.add(
                             (0, ((last_x + 1) * side, (last_y + 1) * side)))
                     if len(path) == width * (height + 1) + (width + 1) * height:
-                        start()
+                        start(current_settings)
                     if turn == 2:
                         turn = 0
                         icebergs = spawn_random(

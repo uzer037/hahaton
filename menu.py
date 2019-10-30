@@ -2,14 +2,15 @@ import pygame
 maxbtn = 4
 
 
-def create(screen, xsz, ysz, cur_set = (2, 5, -1, -1, 0)):
+def create(screen, xsz, ysz, cur_set = (4, 2, -1, -1, 2, 0)):
     maxbtn = 4
     status = 0  # 0=ok,-1=exit
     width = cur_set[0]
     height = cur_set[1]
     step_lim = cur_set[2]
     time_lim = cur_set[3]
-    enem = cur_set[4]
+    iceb = cur_set[4]
+    enem = cur_set[5]
 
     bg = pygame.image.load('menu_bg.png')
 
@@ -75,13 +76,13 @@ def create(screen, xsz, ysz, cur_set = (2, 5, -1, -1, 0)):
                 # 13 = K_KP_ENTER (BECAUSE REASONS)
                 if event.key == pygame.K_SPACE or event.key == 13:
                     if(btn == 0):  # start game
-                        return (width, height, step_lim, time_lim, enem)
+                        return (width, height, step_lim, time_lim, iceb, enem)
                     if(btn == 1):  # scores
                         print("scores")
                     if(btn == 2):  # settings game
                         print("settings")
-                        width, height, step_lim, time_lim, enem = settings(
-                            screen, width, height, step_lim, time_lim, enem, bg, side)
+                        width, height, step_lim, time_lim, iceb, enem = settings(
+                            screen, width, height, step_lim, time_lim, iceb, enem, bg, side)
                     if(btn == 3):  # exit game
                         return -1
 
@@ -104,10 +105,10 @@ def dn(btn):
     return btn
 
 
-def settings(screen, width, height, step_lim, time_lim, enem, bg, side):
+def settings(screen, width, height, step_lim, time_lim, iceb, enem, bg, side):
     font = pygame.font.Font('PoiretOne-Regular.ttf', 25)
 
-    maxbtn = 6
+    maxbtn = 7
     btn = 0
     done = False
     while not done:
@@ -151,6 +152,17 @@ def settings(screen, width, height, step_lim, time_lim, enem, bg, side):
             font.set_bold(True)
         else:
             font.set_bold(False)
+        if(iceb > 0):
+            ic = font.render('Статичных айсбергов:' +
+                             str(iceb), False, (255, 255, 255))
+        else:
+            ic = font.render('Статичных айсбергов:ОТКЛЮЧЕНО',
+                             False, (255, 255, 255))
+
+        if(btn == 5):
+            font.set_bold(True)
+        else:
+            font.set_bold(False)
         if(enem > 0):
             en = font.render('Подвижных айсбергов:' +
                              str(enem), False, (255, 255, 255))
@@ -158,19 +170,20 @@ def settings(screen, width, height, step_lim, time_lim, enem, bg, side):
             en = font.render('Подвижных айсбергов:ОТКЛЮЧЕНО',
                              False, (255, 255, 255))
 
-        if(btn == 5):
+        if(btn == 6):
             font.set_bold(True)
         else:
             font.set_bold(False)
         ex = font.render('Выйти', False, (255, 255, 255))
 
         screen.blit(bg, (0, 0))
-        screen.blit(sett, (side, side//2))
-        screen.blit(pos, (side, side*1.5))
-        screen.blit(w, (side, side*4))
-        screen.blit(h, (side, side*6))
-        screen.blit(sl, (side, side*8))
-        screen.blit(tl, (side, side*10))
+        screen.blit(sett, (side, side/2))
+        screen.blit(pos, (side, side))
+        screen.blit(w, (side, side*2))
+        screen.blit(h, (side, side*4))
+        screen.blit(sl, (side, side*6))
+        screen.blit(tl, (side, side*8))
+        screen.blit(ic, (side, side*10))
         screen.blit(en, (side, side*12))
         screen.blit(ex, (side, side*14))
 
@@ -178,7 +191,6 @@ def settings(screen, width, height, step_lim, time_lim, enem, bg, side):
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-
                 if event.key == pygame.K_w or event.key == pygame.K_UP:
                     btn = btn - 1
                     while(btn >= maxbtn):
@@ -193,8 +205,8 @@ def settings(screen, width, height, step_lim, time_lim, enem, bg, side):
                         btn = btn + maxbtn
 
                 if event.key == pygame.K_SPACE or event.key == 13:
-                    if btn == 5:
-                        return (width, height, step_lim, time_lim, enem)
+                    if btn == maxbtn - 1:
+                        return (width, height, step_lim, time_lim, iceb, enem)
                 if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     if btn == 0:
                         if(width - 1 > 0):
@@ -213,6 +225,11 @@ def settings(screen, width, height, step_lim, time_lim, enem, bg, side):
                         if(time_lim == 0):
                             time_lim = -1
                     if btn == 4:
+                        if(iceb - 1 >= 0):
+                            iceb -= 1
+                        if(iceb == 0):
+                            iceb = -1
+                    if btn == 5:
                         if(enem - 1 >= 0):
                             enem -= 1
                         if(enem == 0):
@@ -231,6 +248,11 @@ def settings(screen, width, height, step_lim, time_lim, enem, bg, side):
                         if(time_lim == 0):
                             time_lim = 1
                     if btn == 4:
+                        iceb += 1
+                        if(iceb == 0):
+                            iceb = 1
+                    if btn == 5:
                         enem += 1
                         if(enem == 0):
                             enem = 1
+                    
