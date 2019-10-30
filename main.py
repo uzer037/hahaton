@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from numpy import ceil, array
+from get_name import get_name
 from menu import create as create_menu, settings
 from enemies import draw_enemies, create_enemies, intelligence
 from Snake import snake
@@ -56,14 +57,19 @@ def start(settings):
 
 def death():
     global done, icebergs, moves, steps
+    pygame.time.wait(200)
+    write_name(get_name(), steps)
     if time == 6 and steps == 66:
         snake()
+    screen = pygame.display.set_mode((xres, yres))
+    bg = pygame.image.load('menu_bg.png')
+    bg = pygame.transform.scale(bg, (500, 500))
+    screen.blit(bg, (0, 0))
     moves_string = ''
     for i in range(len(moves)):
         moves_string += ','.join(map(str,
                                      ceil(array(moves[i])).astype(int))) + '->'
     moves_string += ','.join(map(str, ceil(array(moves[-1])).astype(int)))
-    screen = pygame.display.set_mode((xres, yres))
     myfont = pygame.font.SysFont('Comic Sans MS', 25)
     for i in range(len(moves_string) // 50 + 1):
         current = moves_string[i * 50:min((i + 1) * 50, len(moves_string))]
@@ -73,19 +79,20 @@ def death():
         end = i * 25
         if i > 10:
             break
-    myfont=pygame.font.SysFont('Comic Sans MS', 30)
+    myfont = pygame.font.SysFont('Comic Sans MS', 30)
     end += 50
-    screen.blit(myfont.render(str(steps), False, (0, 255, 0)), (xres / 2 - 100, end))
+    screen.blit(myfont.render('Всего шагов: ' + str(steps), False,
+                              (0, 255, 0)), (xres / 2 - 150, end))
     pygame.display.flip()
     pygame.time.wait(5000)
-    mode=create_menu(screen, xres, yres, current_settings)
+    mode = create_menu(screen, xres, yres, current_settings)
     if mode == -1:
-        done=True
+        done = True
     else:
-        done=False
-        icebergs=[]
-        moves=[[0, 0]]
-        steps=0
+        done = False
+        icebergs = []
+        moves = [[0, 0]]
+        steps = 0
         start(mode)
 
 
@@ -95,35 +102,39 @@ def draw_all():
     draw_enemies(enemies)
     spawn(width, height, screen, side, margin, icebergs)
     if steps_limit == -1:
-        screen.blit(timerfont.render('Шагов: ' + str(steps) + '/oo', False, (255, 255, 255)), (5, 5))
+        screen.blit(timerfont.render('Шагов: ' + str(steps) +
+                                     '/oo', False, (255, 255, 255)), (5, 5))
     else:
-        screen.blit(timerfont.render('Шагов: ' + str(steps) + '/oo' + str(steps_limit), False, (255, 255, 255)), (5, 5))
+        screen.blit(timerfont.render('Шагов: ' + str(steps) +
+                                     '/oo' + str(steps_limit), False, (255, 255, 255)), (5, 5))
     if time_limit == -1:
-        screen.blit(timerfont.render('Время: ' + str(time) + '/oo', False, (255, 255, 255)), (5, 35))
+        screen.blit(timerfont.render('Время: ' + str(time) +
+                                     '/oo', False, (255, 255, 255)), (5, 35))
     else:
-        screen.blit(timerfont.render('Время: ' + str(time) + '/oo' + str(time_limit), False, (255, 255, 255)), (5, 35))
+        screen.blit(timerfont.render('Время: ' + str(time) + '/oo' +
+                                     str(time_limit), False, (255, 255, 255)), (5, 35))
     pygame.display.flip()
 
 
 def move_player(dest_x, dest_y, move_x, move_y):
-    i=0
+    i = 0
     while i < 50:
         if i < 45:
-            player.x=(dest_x - move_x) + i * move_x / 50
-            player.y=(dest_y - move_y) + i * move_y / 50
+            player.x = (dest_x - move_x) + i * move_x / 50
+            player.y = (dest_y - move_y) + i * move_y / 50
             draw_all()
             pygame.display.flip()
             pygame.time.wait(1)
             i += 1
         else:
-            player.x=(dest_x - move_x) + i * move_x / 50
-            player.y=(dest_y - move_y) + i * move_y / 50
+            player.x = (dest_x - move_x) + i * move_x / 50
+            player.y = (dest_y - move_y) + i * move_y / 50
             draw_all()
             pygame.display.flip()
             pygame.time.wait(i - 45)
             i += 1
-    player.x=dest_x
-    player.y=dest_y
+    player.x = dest_x
+    player.y = dest_y
 
 
 def write_name(name, score):
@@ -139,21 +150,20 @@ def write_name(name, score):
     except:
         pass
     arr.append([score, name])
-    arr.sort(reverse=True)
+    arr.sort()
     out = open('scores.txt', 'w')
     for i in range(min(5, len(arr))):
         print(arr[i][0], arr[i][1], file=out)
     out.close()
 
 
-
-mode=create_menu(screen, xres, yres)
-done=True
+mode = create_menu(screen, xres, yres)
+done = True
 if mode != -1:
     global moves, steps
-    done=False
-    moves=[[0, 0]]
-    steps=0
+    done = False
+    moves = [[0, 0]]
+    steps = 0
     start(mode)
 
 while not done:
@@ -165,10 +175,10 @@ while not done:
                   event.key == pygame.K_s or event.key == pygame.K_d or
                   event.key == pygame.K_UP or event.key == pygame.K_LEFT or
                   event.key == pygame.K_DOWN or event.key == pygame.K_RIGHT):
-                dir=get_dir(event.key)
+                dir = get_dir(event.key)
                 steps += 1
-                last_x, last_y=player.x, player.y
-                res=player.move(dir, icebergs)
+                last_x, last_y = player.x, player.y
+                res = player.move(dir, icebergs)
                 if res == 1:
                     pass
                 elif res[-1] == 2:
@@ -188,14 +198,15 @@ while not done:
                     else:
                         path.add(
                             (0, ((last_x + 1) * side, (last_y + 1) * side)))
-                    enemies, alive=intelligence(enemies, player)
+                    enemies, alive = intelligence(enemies, player)
                     if not alive:
+                        draw_all()
                         death()
                     if len(path) == width * (height + 1) + (width + 1) * height:
-                        start(current_settings)
+                        death()
                     if turn == 2:
-                        turn=0
-                        icebergs=spawn_random(
+                        turn = 0
+                        icebergs = spawn_random(
                             width, height, screen, side, margin, icebergs_number)
                     moves.append([player.x, player.y])
                 if steps > steps_limit and steps_limit != -1:
