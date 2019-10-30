@@ -3,9 +3,12 @@ maxbtn = 4
 
 
 def scores(screen, xres, yres):
+    screen.blit(pygame.transform.scale(pygame.image.load('menu_bg.png'), (xres, yres)), (0, 0))
+    font = pygame.font.Font('PoiretOne-Regular.ttf', 25)
+    screen.blit(font.render('Score:   Name:', False, (255, 255, 255)), (25, 0))
+    pygame.display.flip()
     try:
         inp = open('scores.txt', 'r')
-        font = pygame.font.Font('PoiretOne-Regular.ttf', 25)
         arr = []
         s = inp.readline().rstrip()
         while s and len(arr) < 5:
