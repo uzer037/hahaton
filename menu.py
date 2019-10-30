@@ -2,14 +2,14 @@ import pygame
 maxbtn = 4
 
 
-def create(screen, xsz, ysz):
+def create(screen, xsz, ysz, cur_set = (2, 5, -1, -1, 0)):
     maxbtn = 4
     status = 0  # 0=ok,-1=exit
-    width = 5
-    height = 2
-    step_lim = -1
-    time_lim = -1
-    enem = 0
+    width = cur_set[0]
+    height = cur_set[1]
+    step_lim = cur_set[2]
+    time_lim = cur_set[3]
+    enem = cur_set[4]
 
     bg = pygame.image.load('menu_bg.png')
 

@@ -28,8 +28,9 @@ def get_dir(key):
 
 
 def start(settings):
-    global width, height, path, player, turn, icebergs, enemies, steps
+    global width, height, path, player, turn, icebergs, enemies, steps, current_settings
     global moves, time, steps_limit, time_limit, icebergs_number, enemies_number
+    current_settings = settings
     width = settings[0]
     height = settings[1]
     xres, yres = width * side + 2 * margin, height * side + 2 * margin
@@ -62,7 +63,7 @@ def death():
         file.write('\n' + str(steps))
     xres, yres = 500, 500
     screen = pygame.display.set_mode((xres, yres))
-    mode = create_menu(screen, 500, 500)
+    mode = create_menu(screen, 500, 500, current_settings)
     if mode == -1:
         done = True
     else:
