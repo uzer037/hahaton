@@ -135,6 +135,8 @@ while not done:
                     death()
                 else:
                     turn += 1
+                    move_player(res[0], res[1], res[2], res[3])
+                    moves.append([player.x, player.y])
                     if dir == 0:
                         path.add((90, ((last_x + 1) * side, last_y * side)))
                     elif dir == 1:
@@ -145,8 +147,6 @@ while not done:
                     else:
                         path.add(
                             (0, ((last_x + 1) * side, (last_y + 1) * side)))
-                    move_player(res[0], res[1], res[2], res[3])
-                    moves.append([player.x, player.y])
                     enemies, alive = intelligence(enemies, player)
                     if not alive:
                         draw_all()
