@@ -13,7 +13,7 @@ pygame.init()
 width, height = 5, 2
 side, thickness = 100, 1
 margin = side
-xres, yres = 700, 700
+xres, yres = 500, 500
 screen = pygame.display.set_mode((xres, yres))
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 timerfont = pygame.font.Font('cyrillic_pixel-7.ttf', 30)
@@ -150,7 +150,7 @@ def write_name(name, score):
     except:
         pass
     arr.append([score, name])
-    arr.sort()
+    arr.sort(reverse=True)
     out = open('scores.txt', 'w')
     for i in range(min(5, len(arr))):
         print(arr[i][0], arr[i][1], file=out)
