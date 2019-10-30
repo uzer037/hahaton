@@ -140,7 +140,7 @@ def write_name(name, score):
     except:
         pass
     arr.append([score, name])
-    arr.sort()
+    arr.sort(reverse=True)
     out = open('scores.txt', 'w')
     for i in range(min(5, len(arr))):
         print(arr[i][0], arr[i][1], file=out)
