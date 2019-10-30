@@ -17,13 +17,13 @@ myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 
 def get_dir(key):
-    if key == pygame.K_w:
+    if key == pygame.K_w or key == pygame.K_UP:
         return 0
-    elif key == pygame.K_a:
+    elif key == pygame.K_a or key == pygame.K_LEFT:
         return 1
-    elif key == pygame.K_s:
+    elif key == pygame.K_s or key == pygame.K_DOWN:
         return 2
-    elif key == pygame.K_d:
+    elif key == pygame.K_d or key == pygame.K_RIGHT:
         return 3
 
 
@@ -119,7 +119,9 @@ while not done:
             if event.key == pygame.K_ESCAPE:
                 death()
             elif (event.key == pygame.K_w or event.key == pygame.K_a or
-                  event.key == pygame.K_s or event.key == pygame.K_d):
+                  event.key == pygame.K_s or event.key == pygame.K_d or
+                  event.key == pygame.K_UP or event.key == pygame.K_LEFT or
+                  event.key == pygame.K_DOWN or event.key == pygame.K_RIGHT):
                 dir = get_dir(event.key)
                 steps += 1
                 last_x, last_y = player.x, player.y
@@ -132,6 +134,8 @@ while not done:
                     death()
                 else:
                     turn += 1
+                    move_player(res[0], res[1], res[2], res[3])
+                    moves.append([player.x, player.y])
                     if dir == 0:
                         path.add((90, ((last_x + 1) * side, last_y * side)))
                     elif dir == 1:
@@ -142,8 +146,6 @@ while not done:
                     else:
                         path.add(
                             (0, ((last_x + 1) * side, (last_y + 1) * side)))
-                    move_player(res[0], res[1], res[2], res[3])
-                    moves.append([player.x, player.y])
                     enemies, alive = intelligence(enemies, player)
                     if not alive:
                         death()
