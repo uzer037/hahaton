@@ -15,6 +15,7 @@ margin = side
 xres, yres = 700, 700
 screen = pygame.display.set_mode((xres, yres))
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
+timerfont = pygame.font.Font('cyrillic_pixel-7.ttf', 30)
 
 
 def get_dir(key):
@@ -94,8 +95,14 @@ def draw_all():
     player.draw()
     draw_enemies(enemies)
     spawn(width, height, screen, side, margin, icebergs)
-    screen.blit(myfont.render(str(steps), False, (255, 255, 255)), (0, 0))
-    screen.blit(myfont.render(str(time), False, (255, 255, 255)), (0, 30))
+    if steps_limit == -1:
+        screen.blit(timerfont.render('Шагов: ' + str(steps) + '/oo', False, (255, 255, 255)), (5, 5))
+    else:
+        screen.blit(timerfont.render('Шагов: ' + str(steps) + '/oo' + str(steps_limit), False, (255, 255, 255)), (5, 5))
+    if time_limit == -1:
+        screen.blit(timerfont.render('Время: ' + str(time) + '/oo', False, (255, 255, 255)), (5, 35))
+    else:
+        screen.blit(timerfont.render('Время: ' + str(time) + '/oo' + str(time_limit), False, (255, 255, 255)), (5, 35))
     pygame.display.flip()
 
 
