@@ -36,12 +36,13 @@ def start():
     turn = 0
     steps = 0
     time = 0
-    icebergs_number = 5
-    enemies_number = 1
+    icebergs_number = 0
+    enemies_number = 0
     icebergs = []
-    enemies = create_enemies(screen, side, width, height, margin, enemies_number)
-    steps_limit = 70
-    time_limit = -1
+    enemies = create_enemies(
+        screen, side, width, height, margin, enemies_number)
+    steps_limit = -1
+    time_limit = 5
     draw_all()
     pygame.time.set_timer(USEREVENT, 1000)
 
@@ -57,15 +58,42 @@ def death():
     start()
 
 
-def draw_all(draw_player = True):
+def draw_all():
     draw_field(width + 2, height + 2, screen, side, path)
-    if draw_player:
-        player.draw()
+    player.draw()
     draw_enemies(enemies)
     spawn(width, height, screen, side, margin, icebergs)
     screen.blit(myfont.render(str(steps), False, (255, 255, 255)), (0, 0))
     screen.blit(myfont.render(str(time), False, (255, 255, 255)), (0, 30))
     pygame.display.flip()
+
+
+def move_player(dest_x, dest_y, move_x, move_y):
+    i = 0
+    while i < 100:
+        if i < 5:
+            player.x = (dest_x - move_x) + i * move_x / 100
+            player.y = (dest_y - move_y) + i * move_y / 100
+            draw_all()
+            pygame.display.flip()
+            pygame.time.wait(5 - i)
+            i += 1
+        elif i < 80:
+            player.x = (dest_x - move_x) + i * move_x / 100
+            player.y = (dest_y - move_y) + i * move_y / 100
+            draw_all()
+            pygame.display.flip()
+            pygame.time.wait(1)
+            i += 1
+        else:
+            player.x = (dest_x - move_x) + i * move_x / 100
+            player.y = (dest_y - move_y) + i * move_y / 100
+            draw_all()
+            pygame.display.flip()
+            pygame.time.wait(i - 80)
+            i += 1
+    player.x = dest_x
+    player.y = dest_y
 
 
 done = False
@@ -81,7 +109,6 @@ while not done:
                 done = True
             elif (event.key == pygame.K_w or event.key == pygame.K_a or
                   event.key == pygame.K_s or event.key == pygame.K_d):
-                draw_all(False)
                 dir = get_dir(event.key)
                 steps += 1
                 last_x, last_y = player.x, player.y
@@ -92,6 +119,11 @@ while not done:
                     pass
                 else:
                     turn += 1
+                    enemies, alive = intelligence(enemies, player)
+                    if not alive:
+                        death()
+                    move_player(res[0], res[1], res[2], res[3])
+                    moves.append([player.x, player.y])
                     if dir == 0:
                         path.add((90, ((last_x + 1) * side, last_y * side)))
                     elif dir == 1:
@@ -102,20 +134,13 @@ while not done:
                     else:
                         path.add(
                             (0, ((last_x + 1) * side, (last_y + 1) * side)))
-
+                    if len(path) == width * (height + 1) + (width + 1) * height:
+                        start()
                     if turn == 2:
                         turn = 0
                         icebergs = spawn_random(
                             width, height, screen, side, margin, icebergs_number)
-
-                    if len(path) == width * (height + 1) + (width + 1) * height:
-                        start()
-                    moves.append([player.x, player.y])
-                    enemies, alive = intelligence(enemies, player)
-                    if not alive:
-                        print(1)
-                        death()
-                if steps > steps_limit:
+                if steps > steps_limit and steps_limit != -1:
                     death()
                 draw_all()
         elif event.type == USEREVENT:
