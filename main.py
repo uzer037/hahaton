@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from numpy import ceil, array
+from Story import intro, lose, victory
 from get_name import get_name
 from menu import create as create_menu, settings
 from enemies import draw_enemies, create_enemies, intelligence
@@ -17,6 +18,9 @@ xres, yres = 700, 700
 screen = pygame.display.set_mode((xres, yres))
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 timerfont = pygame.font.Font('cyrillic_pixel-7.ttf', 30)
+
+
+intro(screen, xres, yres)
 
 
 def get_dir(key):
@@ -55,13 +59,17 @@ def start(settings):
     pygame.time.set_timer(USEREVENT, 1000)
 
 
-def death():
+def death(win):
     global done, icebergs, moves, steps
     pygame.time.wait(200)
+    screen = pygame.display.set_mode((xres, yres))
+    if win:
+        victory(screen, xres, yres)
+    else:
+        lose(screen, xres, yres)
     write_name(get_name(), steps)
     if time == 6 and steps == 66:
         snake()
-    screen = pygame.display.set_mode((xres, yres))
     bg = pygame.image.load('menu_bg.png')
     bg = pygame.transform.scale(bg, (xres, yres))
     screen.blit(bg, (0, 0))
@@ -178,7 +186,7 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                death()
+                death(False)
             elif (event.key == pygame.K_w or event.key == pygame.K_a or
                   event.key == pygame.K_s or event.key == pygame.K_d or
                   event.key == pygame.K_UP or event.key == pygame.K_LEFT or
@@ -192,7 +200,7 @@ while not done:
                 elif res[-1] == 2:
                     move_player(res[0], res[1], res[2], res[3])
                     moves.append([player.x, player.y])
-                    death()
+                    death(False)
                 else:
                     turn += 1
                     move_player(res[0], res[1], res[2], res[3])
@@ -209,19 +217,19 @@ while not done:
                     enemies, alive = intelligence(enemies, player)
                     if not alive:
                         draw_all()
-                        death()
+                        death(False)
                     if len(path) == width * (height + 1) + (width + 1) * height:
-                        death()
+                        death(True)
                     if turn == 2:
                         turn = 0
                         icebergs = spawn_random(
                             width, height, screen, side, margin, icebergs_number)
                     moves.append([player.x, player.y])
                 if steps > steps_limit and steps_limit != -1:
-                    death()
+                    death(False)
                 draw_all()
         elif event.type == USEREVENT:
             time += 1
             if time > time_limit and time_limit != -1:
-                death()
+                death(False)
             draw_all()
