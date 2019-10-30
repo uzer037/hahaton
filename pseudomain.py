@@ -1,7 +1,7 @@
 import pygame
 import menu
 pygame.init()
-xsz = 500
+xsz = 750
 ysz = 500
 screen = pygame.display.set_mode((xsz,ysz))
 menu.create(screen, xsz, ysz)

@@ -79,14 +79,14 @@ def create(screen, xsz, ysz):
                 b[btn] = txtb[btn]
                 if event.key == pygame.K_SPACE or event.key == 13: #13 = K_KP_ENTER (BECAUSE REASONS)
                     if(btn == 0): #start game
-                        print("start")
+                        return (0, width, height, step_lim, time_lim, enem)
                     if(btn == 1): #scores
                         print("scores")
                     if(btn == 2): #settings game
                         print("settings")
                         width, height, step_lim, time_lim, enem = settings(screen, width, height, step_lim, time_lim, enem, bg, side)
                     if(btn == 3): #exit game
-                        pygame.quit()
+                        return (-1, 0,0,0,0)
 
 
 def up(btn):
