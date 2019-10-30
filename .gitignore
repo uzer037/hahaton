@@ -12,3 +12,5 @@ ship_left.png~
 __pycache__/
 
 *.txt~
+
+output.txt
