@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from menu import create as create_menu, settings
 from enemies import draw_enemies, create_enemies, intelligence
 from Snake import snake
 from draw import draw_field
@@ -10,7 +11,7 @@ pygame.init()
 width, height = 5, 2
 side, thickness = 100, 1
 margin = side
-xres, yres = width * side + 2 * margin, height * side + 2 * margin
+xres, yres = 500, 500
 screen = pygame.display.set_mode((xres, yres))
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
@@ -26,28 +27,32 @@ def get_dir(key):
         return 3
 
 
-def start():
+def start(settings):
+    global width, height, path, player, turn, icebergs, enemies, steps
+    global moves, time, steps_limit, time_limit, icebergs_number, enemies_number
+    width = settings[0]
+    height = settings[1]
     xres, yres = width * side + 2 * margin, height * side + 2 * margin
     screen = pygame.display.set_mode((xres, yres))
-    global path, player, turn, icebergs, enemies, steps, moves, time, steps_limit, time_limit, icebergs_number, enemies_number
     path = set()
     moves = [[0, 0]]
     player = Ship(screen, 0, 0, side, width, height, margin)
     turn = 0
     steps = 0
     time = 0
-    icebergs_number = 0
+    icebergs_number = settings[4]
     enemies_number = 0
     icebergs = []
     enemies = create_enemies(
         screen, side, width, height, margin, enemies_number)
-    steps_limit = -1
-    time_limit = 5
+    steps_limit = settings[2]
+    time_limit = settings[3]
     draw_all()
     pygame.time.set_timer(USEREVENT, 1000)
 
 
 def death():
+    global done, icebergs, moves, steps
     if time == 6 and steps == 66:
         snake()
     with open('output.txt', 'w') as file:
@@ -55,7 +60,17 @@ def death():
             file.write(','.join(map(str, moves[i])) + '->')
         file.write(','.join(map(str, moves[-1])))
         file.write('\n' + str(steps))
-    start()
+    xres, yres = 500, 500
+    screen = pygame.display.set_mode((xres, yres))
+    mode = create_menu(screen, 500, 500)
+    if mode == -1:
+        done = True
+    else:
+        done = False
+        icebergs = []
+        moves = [[0, 0]]
+        steps = 0
+        start(mode)
 
 
 def draw_all():
@@ -96,17 +111,21 @@ def move_player(dest_x, dest_y, move_x, move_y):
     player.y = dest_y
 
 
-done = False
-icebergs = []
-moves = [[0, 0]]
+mode = create_menu(screen, 500, 500)
+done = True
+if mode != -1:
+    global icebergs, moves, steps
+    done = False
+    icebergs = []
+    moves = [[0, 0]]
+    steps = 0
+    start(mode)
 
-steps = 0
-start()
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                done = True
+                death()
             elif (event.key == pygame.K_w or event.key == pygame.K_a or
                   event.key == pygame.K_s or event.key == pygame.K_d):
                 dir = get_dir(event.key)
